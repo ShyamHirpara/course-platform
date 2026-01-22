@@ -1,2 +1,4 @@
 Django == 5.2.9
 pillow
+cloudinary 
+python-decouple

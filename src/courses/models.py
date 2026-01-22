@@ -1,5 +1,7 @@
 from django.db import models
-
+from cloudinary.models import CloudinaryField
+import helpers
+helpers.cloudinary_init()
 # Create your models here.
 
 """
@@ -27,6 +29,7 @@ Lessons:
         Status:same as course
 """
 
+
 class PublishedStatus(models.TextChoices):
     PUBLISHED = "publish",  "Published"
     COMING_SOON = "soon" , "Coming Soon"
@@ -42,10 +45,15 @@ class Course(models.Model):
     pass
     title = models.CharField(max_length=120)
     description = models.TextField(max_length=300,blank = True,null = True)
-    image = models.ImageField(
-        upload_to= handle_upload,
-        blank=True,
-        null=True
+    # image = models.ImageField(
+    #     upload_to= handle_upload,
+    #     blank=True,
+    #     null=True
+    # )
+
+    image = CloudinaryField(
+        'image',
+        null = True
     )
     access = models.CharField(
         max_length= 5,

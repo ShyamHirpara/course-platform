@@ -1,5 +1,25 @@
+from dataclasses import fields
 from django.contrib import admin
 from .models import Course
+from django.utils.html import format_html
+from cloudinary import CloudinaryImage
 # Register your models here.
 
-admin.site.register(Course)
+# admin.site.register(Course)
+@admin.register(Course)
+class CourseAdmin(admin.ModelAdmin):
+    list_display = ['title','status','access']
+    list_filter = ['status','access']
+    fields = ['title','description','status','access','image','display_image']
+    readonly_fields = ['display_image']
+
+    def display_image(self, obj , *args, **kwargs):
+        # getting url of the image from database
+        
+        cloudinary_id = str(obj.image)
+        cloudinary_html =  CloudinaryImage(cloudinary_id).image(width=500)
+        return format_html(cloudinary_html)
+        # url = obj.image.url
+        # return format_html(f"<img src = '{url}' />")
+
+    display_image.short_description = "Current Image"
